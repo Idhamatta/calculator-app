@@ -13,12 +13,16 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
+  String number1 = ''; // . 0-9
+  String operand = ''; // + - * %
+  String number2 = ''; // . 0-9
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calculator'),
+        title: const Text('Rodrik Calculator'),
         centerTitle: true,
         titleTextStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
       ),
@@ -33,7 +37,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   alignment: Alignment.bottomRight,
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    '0',
+                    '$number1$operand$number2'.isEmpty
+                        ? '0'
+                        : '$number1$operand$number2',
                     style: const TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
@@ -48,7 +54,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               children: Btn.buttonValues
                   .map(
                     (value) => SizedBox(
-                        width: screenSize.width / 4,
+                        width: value == Btn.n0
+                            ? screenSize.width / 2
+                            : (screenSize.width / 4),
                         height: screenSize.width / 5,
                         child: buildButton(value)),
                   )
@@ -64,24 +72,40 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Material(
-        color: [Btn.del, Btn.clr].contains(value)
-            ? Colors.blueGrey
-            : [
-                Btn.per,
-                Btn.multiply,
-                Btn.add,
-                Btn.subtract,
-                Btn.divide,
-                Btn.calculate
-              ].contains(value)
-                ? const Color.fromARGB(255, 255, 111, 0)
-                : Colors.deepPurple[400],
+        color: getBtnColor(value),
         clipBehavior: Clip.hardEdge,
         shape: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.white24),
             borderRadius: BorderRadius.circular(100)),
-        child: InkWell(onTap: () {}, child: Center(child: Text(value))),
+        child: InkWell(
+            onTap: () => onBtnTap(value),
+            child: Center(
+                child: Text(
+              value,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ))),
       ),
     );
+  }
+
+  void onBtnTap(String value) {
+    setState(() {
+      number1 += value;
+    });
+  }
+
+  Color getBtnColor(value) {
+    return [Btn.del, Btn.clr].contains(value)
+        ? const Color.fromARGB(255, 31, 137, 142)
+        : [
+            Btn.per,
+            Btn.multiply,
+            Btn.add,
+            Btn.subtract,
+            Btn.divide,
+            Btn.calculate
+          ].contains(value)
+            ? const Color(0xFF0F5A5E)
+            : Color.fromARGB(255, 155, 155, 152);
   }
 }
