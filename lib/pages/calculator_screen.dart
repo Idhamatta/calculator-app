@@ -89,9 +89,52 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void onBtnTap(String value) {
-    setState(() {
+    if (value == Btn.del) {
+      delete();
+      return;
+    }
+    appendValue(value);
+  }
+
+  void delete() {
+    if (number2.isNotEmpty) {
+      // 12323 => 1232
+      number2 = number2.substring(0, number2.length - 1);
+    } else if (operand.isNotEmpty) {
+      operand = '';
+    } else if (number1.isNotEmpty) {
+      number1 = number1.substring(0, number1.length - 1);
+    }
+
+    setState(() {});
+  }
+
+  void appendValue(String value) {
+    // number1 operand number2
+    // 234        +    456
+    // if is operand and not
+    if (value != Btn.dot && int.tryParse(value) == null) {
+      // operand pressed
+      if (operand.isNotEmpty && number2.isNotEmpty) {
+        // TODO calculate the equation before assigning new operate
+      }
+      operand = value;
+      // asign value to number1 variable
+    } else if (number1.isEmpty || operand.isEmpty) {
+      // check if value is "." | ex: number1 = "1.2"
+      if (value == Btn.dot && number1.contains(Btn.dot)) return;
+      if (value == Btn.dot && (number1.isEmpty || number1 == Btn.n0)) {
+        value = '0.';
+      }
       number1 += value;
-    });
+    } else if (number2.isEmpty || operand.isNotEmpty) {
+      if (value == Btn.dot && number2.contains(Btn.dot)) return;
+      if (value == Btn.dot && (number2.isEmpty || number2 == Btn.n0)) {
+        value = '0.';
+      }
+      number2 += value;
+    }
+    setState(() {});
   }
 
   Color getBtnColor(value) {
