@@ -93,7 +93,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       delete();
       return;
     }
+
+    if (value == Btn.clr) {
+      clearAll();
+      return;
+    }
     appendValue(value);
+  }
+
+  // clears all output
+  void clearAll() {
+    setState(() {
+      number1 = '';
+      operand = '';
+      number2 = '';
+    });
   }
 
   void delete() {
