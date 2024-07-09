@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Calculator',
       theme: ThemeData.dark(),
-      home: CalculatorScreen(),
+      home: const CalculatorScreen(),
     );
   }
 }

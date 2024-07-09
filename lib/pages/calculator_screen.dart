@@ -22,7 +22,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rodrik Calculator'),
+        title: const Text('Calculator'),
         centerTitle: true,
         titleTextStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
       ),
